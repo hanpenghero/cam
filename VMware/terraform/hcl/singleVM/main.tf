@@ -172,8 +172,7 @@ resource "vsphere_virtual_machine" "vm_1" {
 
     customize {
       windows_options {
-        domain    = "${var.vm_1_domain}"
-        host_name = "${var.vm_1_name}"
+        computer_name = "${var.vm_1_name}"
       }
 
       network_interface {
