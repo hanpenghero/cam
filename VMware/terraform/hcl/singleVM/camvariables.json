@@ -165,7 +165,7 @@
           "label": "ide"
         }
       ],
-      "required": true,
+      "required": false,
       "immutable": false,
       "group_name": "virtualmachine"
     },
@@ -176,7 +176,7 @@
       "hidden": false,
       "label": "Template Disk Datastore - vm_1",
       "secured": false,
-      "required": false,
+      "required": true,
       "immutable": false,
       "group_name": "virtualmachine"
     },
