@@ -206,7 +206,7 @@ resource "vsphere_virtual_machine" "vm_1" {
 
   provisioner "file" {
     destination = "Private_IP.txt"
-    ontent = <<EOF
+    content = <<EOF
 DB_IP="${var.DB_Server_IP}"
 EOF
   }
