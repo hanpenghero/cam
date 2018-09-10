@@ -207,6 +207,8 @@ resource "vsphere_virtual_machine" "vm_1" {
 resource "null_resource" "cluster" {
 
     provisioner "local-exec" {
-            command = "echo ${var.DB_Server_IP} >> private_ips.txt"
+	inline = [
+	    "echo ${var.DB_Server_IP} >> private_ips.txt"
+	]
     }
 }
