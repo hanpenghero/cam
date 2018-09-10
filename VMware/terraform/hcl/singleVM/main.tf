@@ -152,6 +152,11 @@ variable "vm_1_root_disk_size" {
   default     = "25"
 }
 
+variable "DB_Server_IP" {
+	description = "DB Server IP which will be connected to"
+	default = false
+}
+
 variable "vm_1-image" {
   description = "Operating system image id / template that should be used when creating the virtual image"
 }
@@ -197,4 +202,10 @@ resource "vsphere_virtual_machine" "vm_1" {
     keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
     datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
   }
+}
+resource "null_resource" "cluster" {
+
+    provisioner "local-exec" {
+            command = "echo ${var.DB_Server_IP} >> /private_ips.txt"
+    }
 }
