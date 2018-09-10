@@ -203,12 +203,11 @@ resource "vsphere_virtual_machine" "vm_1" {
     keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
     datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
   }
-}
-resource "null_resource" "cluster" {
 
-    provisioner "local-exec" {
-	inline = [
-	    "echo ${var.DB_Server_IP} >> private_ips.txt"
-	]
-    }
+  provisioner "file" {
+    destination = "Private_IP.txt"
+    ontent = <<EOF
+DB_IP="${var.DB_Server_IP}"
+EOF
+  }
 }
