@@ -176,8 +176,9 @@ resource "vsphere_virtual_machine" "vm_1" {
     template_uuid = "${data.vsphere_virtual_machine.vm_1_template.id}"
 
     customize {
-      windows_options {
-        computer_name = "${var.vm_1_name}"
+      linux_options {
+	domain    = "${var.vm_1_domain}"
+	host_name = "${var.vm_1_name}"
       }
 
       network_interface {
