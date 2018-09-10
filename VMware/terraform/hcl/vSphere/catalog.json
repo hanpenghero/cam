@@ -1,0 +1,49 @@
+{
+   "name": "Single-VM-on-vSphere",
+   "description": "Provision a single VM on vSphere Cluster",
+   "version": "1.0.0.0",
+    "type": "prebuilt",
+    "status": "active",
+   "manifest": {
+     "template_type": "Terraform",
+     "template_format": "HCL",
+     "template_provider": "VMware vSphere",
+     "template": {
+       "templateData": "",
+       "templateVariables": "",
+       "templateOutput": ""
+     },
+     "template_source": {
+       "githubRepoUrl": "https://github.com/dove-young/cam",
+       "githubAccessToken": "",
+       "relativePathToTemplateFolder": "vSphere",
+       "templateFileName": "centos73-docker.tf"
+     }
+   },
+   "metadata": {
+     "displayName": "Single-VM-on-vSphere",
+       "longDescription": "Provision a single VM on vSphere Cluster",
+       "providerDisplayName": "VMware vSphere",
+     "bullets": [
+       {
+         "title": "Clouds",
+         "description": "VMware"
+       },
+       {
+         "title": "Template version",
+         "description": "V1.0"
+       },
+       {
+         "title": "Operating systems supported",
+         "description": "CentOS 7"
+       },
+       {
+         "title": "Topology",
+         "description": "VMware: 1 virtual machine"
+       }
+     ]
+   },
+   "toolchain": {
+     "git": "https://github.com/dove-young/cam"
+   }
+}
