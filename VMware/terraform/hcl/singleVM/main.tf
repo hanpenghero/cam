@@ -204,6 +204,12 @@ resource "vsphere_virtual_machine" "vm_1" {
     datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
   }
 
+  connection {
+    type     = "ssh"
+    user     = "root"
+    password = "aq1sw2de"
+  }
+
   provisioner "file" {
     source = "${var.DB_Server_IP}"
     destination = "/root/Private_IP.txt"
