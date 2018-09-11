@@ -211,7 +211,9 @@ resource "vsphere_virtual_machine" "vm_1" {
   }
 
   provisioner "file" {
-    source = "${var.DB_Server_IP}"
     destination = "/root/Private_IP.txt"
+    content = <<EOF
+DB_IP : "${var.DB_Server_IP}"
+EOF
   }
 }
