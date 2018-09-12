@@ -216,18 +216,9 @@ resource "vsphere_virtual_machine" "vm_1" {
 DB_IP : "${var.DB_Server_IP}"
 EOF
   }
+}
 
-  provisioner "local-exec" {
-     command = "echo test > /tmp/test.txt"
-  }
-
-  provisioner "local-exec" {
-     command = <<EOF
-bash /scripts/start_mongoexpress.sh
-EOF
-  }
-
-  provisioner "local-exec" {
-     command = "bash /scripts/start_mongoexpress.sh"
-  }
+resource "null_resource" "vm_1" {
+   provisioner "local-exec" {
+    command = "echo test > /tmp/test.txt"
 }
