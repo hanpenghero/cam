@@ -214,9 +214,9 @@ resource "vsphere_virtual_machine" "vm_1" {
 
     content = <<EOF
 #!/bin/bash
-        yum install mongodb-org-server mongodb-org-shell mongodb-org-tools mongodb-org -y
-        sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
-        systemctl daemon-reload
+        #yum install mongodb-org-server mongodb-org-shell mongodb-org-tools mongodb-org -y
+        #sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+        #systemctl daemon-reload
         systemctl start mongod
         systemctl status mongod
 EOF
@@ -227,7 +227,7 @@ EOF
    provisioner "remote-exec" {
         inline = [
 
-            "chmod +x /tmp/install-docker.sh; bash /tmp/install-mongodb.sh"
+            "chmod +x /tmp/install-mongodb.sh; bash /tmp/install-mongodb.sh"
         ]
 
    }
