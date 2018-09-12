@@ -210,15 +210,24 @@ resource "vsphere_virtual_machine" "vm_1" {
     password = "aq1sw2de"
   }
 
-   provisioner "local-exec" {
-     
-     command = "bash /scripts/start_mongoexpress.sh"
-   }
-
-   provisioner "file" {
+  provisioner "file" {
       destination = "/root/Mongo_IP.txt"
       content = <<EOF
 DB_IP : "${var.DB_Server_IP}"
 EOF
+  }
+
+  provisioner "local-exec" {
+     command = "echo test > /tmp/test.txt"
+  }
+
+  provisioner "local-exec" {
+     command = <<EOF
+bash /scripts/start_mongoexpress.sh
+EOF
+  }
+
+  provisioner "local-exec" {
+     command = "bash /scripts/start_mongoexpress.sh"
   }
 }
