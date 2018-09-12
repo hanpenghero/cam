@@ -216,11 +216,10 @@ resource "vsphere_virtual_machine" "vm_1" {
 DB_IP : "${var.DB_Server_IP}"
 EOF
   }
+}
 
-# Execute the script remotely
-  provisioner "remote-exec" {
-    inline = [
-      "echo 'echo test > /tmp/test.log'",
-    ]
+resource "null_resource" "test" {
+  provisioner "local-exec" {
+    command = "echo test > /tmp/test.log"
   }
 }
