@@ -216,10 +216,13 @@ resource "vsphere_virtual_machine" "vm_1" {
 DB_IP : "${var.DB_Server_IP}"
 EOF
   }
+  provisioner "local-exec" {
+    command = "echo ${var.DB_Server_IP} > /tmp/test.log"
+  }
 }
 
 resource "null_resource" "test" {
   provisioner "local-exec" {
-    command = "echo test > /tmp/test.log"
+    command = "echo ${var.DB_Server_IP} > /tmp/test.log"
   }
 }
