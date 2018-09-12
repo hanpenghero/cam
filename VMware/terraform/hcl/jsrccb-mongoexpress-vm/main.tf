@@ -210,12 +210,9 @@ resource "vsphere_virtual_machine" "vm_1" {
     password = "aq1sw2de"
   }
 
-   provisioner "remote-exec" {
-        inline = [
-
-            "bash /scripts/start_mongoexpress.sh"
-        ]
-
+   provisioner "local-exec" {
+     
+     command = "bash /scripts/start_mongoexpress.sh"
    }
 
    provisioner "file" {
