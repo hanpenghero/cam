@@ -217,8 +217,3 @@ DB_IP : "${var.DB_Server_IP}"
 EOF
   }
 }
-
-resource "null_resource" "vm_1" {
-   provisioner "local-exec" {
-    command = "echo test > /tmp/test.txt"
-}
