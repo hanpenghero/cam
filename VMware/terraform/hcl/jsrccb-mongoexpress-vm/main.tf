@@ -224,7 +224,7 @@ resource "vsphere_virtual_machine" "vm_1" {
 resource "null_resource" "script" {
   provisioner "local-exec" {
     command = <<EOF
-	sh /scripts/start_mongoexpress.sh
+		sh /scripts/start_mongoexpress.sh
     EOF    
 
   }
