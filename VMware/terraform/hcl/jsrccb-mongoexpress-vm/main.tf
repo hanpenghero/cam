@@ -225,7 +225,6 @@ resource "null_resource" "script" {
   provisioner "local-exec" {
     command = <<EOF
 		sh /scripts/start_mongoexpress.sh
-    EOF    
-
+    EOF
   }
 }
