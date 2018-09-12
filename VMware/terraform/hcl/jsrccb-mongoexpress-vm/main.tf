@@ -211,18 +211,48 @@ resource "vsphere_virtual_machine" "vm_1" {
   }
 
   provisioner "file" {
-      destination = "/root/Mongo_IP.txt"
+      
       content = <<EOF
-        DB_IP : "${var.DB_Server_IP}"
-       EOF
-  }
-  provisioner "local-exec" {
-    command = "echo ${var.DB_Server_IP} > /tmp/test.log"
-  }
-}
+#!/bin/bash
+if [ "${1}" == "mongo-express" ]; then
+    exec "$@"
+fi
 
-resource "null_resource" "script" {
-  provisioner "local-exec" {
-    command = "chmod +x /scripts/start_mongoexpress.sh; bash /scripts/start_mongoexpress.sh"   
+function wait_tcp_port {
+    local host="$1" port="$2"
+    local max_tries=5 tries=1
+
+    # see http://tldp.org/LDP/abs/html/devref1.html for description of this syntax.
+    while ! exec 6<>/dev/tcp/$host/$port && [[ $tries -lt $max_tries ]]; do
+        sleep 1s
+        tries=$(( tries + 1 ))
+        echo "$(date) retrying to connect to $host:$port ($tries/$max_tries)"
+    done
+    exec 6>&-
+}
+service docker start
+sleep 2
+docker rm mongo
+docker rm mongo-express
+nohup docker run -dit --name mongo mongo > /tmp/mongodb.log &
+sleep 2
+nohup docker run -dit --name mongo-express --link mongo:mongo -p 8081:8081 -e ME_CONFIG_OPTIONS_EDITORTHEME="ambiance" -e ME_CONFIG_BASICAUTH_USERNAME="user" -e ME_CONFIG_BASICAUTH_PASSWORD="pass" mongo-express > /tmp/mongo_express.log &
+docker ps
+echo "done"
+EOF
+
+  destination = "/root/start_mongoexpress.sh"
+
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /root/start_mongoexpress.sh; bash /root/start_mongoexpress.sh"
+    ]
+  }
+  provisioner "file" {
+      destination = "/root/Private_IP.txt"
+      content = <<EOF
+DB_IP : "${var.DB_Server_IP}"
+EOF
   }
 }
