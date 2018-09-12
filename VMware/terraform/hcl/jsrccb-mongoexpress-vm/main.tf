@@ -211,8 +211,7 @@ resource "vsphere_virtual_machine" "vm_1" {
   }
 
   provisioner "file" {
-      destination = "/root/start_mongoexpress.sh"
-
+      
       content = <<EOF
 #!/bin/bash
 if [ "${1}" == "mongo-express" ]; then
@@ -231,30 +230,29 @@ function wait_tcp_port {
     done
     exec 6>&-
 }
-
-
 service docker start
-
 sleep 2
-
 docker rm mongo
 docker rm mongo-express
-
 docker run --name mongo mongo > /tmp/mongodb.log &
-
-
 sleep 2
-
 docker run --rm --name mongo-express --link mongo:mongo -p 8081:8081 -e ME_CONFIG_OPTIONS_EDITORTHEME="ambiance" -e ME_CONFIG_BASICAUTH_USERNAME="user" -e ME_CONFIG_BASICAUTH_PASSWORD="pass" mongo-express > /tmp/mongo_express.log &
-
-sleep 1
 docker ps
 echo "done"
 EOF
+
+  destination = "/root/start_mongoexpress.sh"
+
   }
   provisioner "remote-exec" {
     inline = [
       "chmod +x /root/start_mongoexpress.sh; bash /root/start_mongoexpress.sh"
     ]
+  }
+  provisioner "file" {
+      destination = "/root/Private_IP.txt"
+      content = <<EOF
+DB_IP : "${var.DB_Server_IP}"
+EOF
   }
 }
