@@ -234,9 +234,9 @@ service docker start
 sleep 2
 docker rm mongo
 docker rm mongo-express
-docker run --name mongo mongo > /tmp/mongodb.log &
+nohup docker run --name mongo mongo > /tmp/mongodb.log &
 sleep 2
-docker run --rm --name mongo-express --link mongo:mongo -p 8081:8081 -e ME_CONFIG_OPTIONS_EDITORTHEME="ambiance" -e ME_CONFIG_BASICAUTH_USERNAME="user" -e ME_CONFIG_BASICAUTH_PASSWORD="pass" mongo-express > /tmp/mongo_express.log &
+nohup docker run --rm --name mongo-express --link mongo:mongo -p 8081:8081 -e ME_CONFIG_OPTIONS_EDITORTHEME="ambiance" -e ME_CONFIG_BASICAUTH_USERNAME="user" -e ME_CONFIG_BASICAUTH_PASSWORD="pass" mongo-express > /tmp/mongo_express.log &
 docker ps
 echo "done"
 EOF
