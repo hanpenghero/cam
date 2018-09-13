@@ -204,7 +204,7 @@ resource "vsphere_virtual_machine" "vm_1" {
   }
   connection {
     type     = "winrm"
-    user     = "administrator"
+    user     = "jsrccb"
     password = "passw0rd"
     agent    = false
     insecure = true
