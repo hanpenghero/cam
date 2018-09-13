@@ -202,4 +202,45 @@ resource "vsphere_virtual_machine" "vm_1" {
     keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
     datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
   }
+  connection {
+    type     = "winrm"
+    user     = "administrator"
+    password = "passw0rd"
+    agent    = false
+    insecure = true
+  }
+
+  provisioner "file" {
+
+    content = <<EOF
+<html>
+
+<head>
+
+   <title>TonyHanTesting</title>
+
+</head>
+
+<body>
+
+    Hello World , I love the World ...
+
+    Connecting to Mysql DB .... On IP : "${var.DB_Server_IP}"
+
+</body>
+
+</html>
+EOF
+
+        destination = "C:/jsrccb"
+   }
+
+   provisioner "remote-exec" {
+        inline = [
+
+            "echo hello > C:/test.txt"
+        ]
+
+   }
+
 }
