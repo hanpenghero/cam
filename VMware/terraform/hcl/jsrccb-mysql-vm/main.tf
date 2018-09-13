@@ -223,9 +223,9 @@ resource "vsphere_virtual_machine" "vm_1" {
 
     content = <<EOF
 #!/bin/bash
-        #yum install mongodb-org-server mongodb-org-shell mongodb-org-tools mongodb-org -y
+        yum install mariadb* -y
         #sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
-        #systemctl daemon-reload
+        systemctl enable mariadb.service
         systemctl start mariadb.service
         systemctl status mariadb.service
 EOF
