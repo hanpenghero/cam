@@ -102,13 +102,11 @@ variable "vm_1_resource_pool" {
 variable "vm_1_dns_suffixes" {
   type        = "list"
   description = "Name resolution suffixes for the virtual network adapter"
-  default     = "cn.ibm.com"
 }
 
 variable "vm_1_dns_servers" {
   type        = "list"
   description = "DNS servers for the virtual network adapter"
-  default     = "9.0.146.50"
 }
 
 variable "vm_1_network_interface_label" {
