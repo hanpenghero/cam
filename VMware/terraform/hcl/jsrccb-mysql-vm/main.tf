@@ -223,6 +223,8 @@ resource "vsphere_virtual_machine" "vm_1" {
 
     content = <<EOF
 #!/bin/bash
+        export http_proxy=http://9.111.139.54:3128
+        export https_proxy=https://9.111.139.54:3128
         yum install mariadb* -y
         #sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
         systemctl enable mariadb.service
