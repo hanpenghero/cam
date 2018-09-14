@@ -171,8 +171,6 @@ resource "vsphere_virtual_machine" "vm_1" {
   datastore_id     = "${data.vsphere_datastore.vm_1_datastore.id}"
   guest_id         = "${data.vsphere_virtual_machine.vm_1_template.guest_id}"
   scsi_type        = "${data.vsphere_virtual_machine.vm_1_template.scsi_type}"
-  user		   = "Administrator"
-  password 	   = "password"
 
   clone {
     template_uuid = "${data.vsphere_virtual_machine.vm_1_template.id}"
@@ -203,6 +201,9 @@ resource "vsphere_virtual_machine" "vm_1" {
     size           = "${var.vm_1_root_disk_size}"
     keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
     datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
+  }
+  windows_opt_config {
+     admin_password = "passw0rd"
   }
   connection {
     type     = "winrm"
