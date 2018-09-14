@@ -204,6 +204,7 @@ resource "vsphere_virtual_machine" "vm_1" {
   }
   connection {
     type     = "winrm"
+    host     = "9.112.239.238"
     user     = "jsrccb"
     password = "passw0rd"
     agent    = false
