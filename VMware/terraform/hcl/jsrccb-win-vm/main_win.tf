@@ -171,6 +171,8 @@ resource "vsphere_virtual_machine" "vm_1" {
   datastore_id     = "${data.vsphere_datastore.vm_1_datastore.id}"
   guest_id         = "${data.vsphere_virtual_machine.vm_1_template.guest_id}"
   scsi_type        = "${data.vsphere_virtual_machine.vm_1_template.scsi_type}"
+  user		   = "Administrator"
+  password 	   = "password"
 
   clone {
     template_uuid = "${data.vsphere_virtual_machine.vm_1_template.id}"
@@ -205,7 +207,7 @@ resource "vsphere_virtual_machine" "vm_1" {
   connection {
     type     = "winrm"
     host     = "9.112.239.238"
-    user     = "jsrccb"
+    user     = "Administrator"
     password = "passw0rd"
     agent    = false
     insecure = true
