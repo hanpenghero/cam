@@ -171,10 +171,21 @@ resource "vsphere_virtual_machine" "vm_1" {
   datastore_id     = "${data.vsphere_datastore.vm_1_datastore.id}"
   guest_id         = "${data.vsphere_virtual_machine.vm_1_template.guest_id}"
   scsi_type        = "${data.vsphere_virtual_machine.vm_1_template.scsi_type}"
+  
+  network_interface {
+    	network_id   = "${data.vsphere_network.vm_1_network.id}"
+    	adapter_type = "${var.vm_1_adapter_type}"
+  }
+  disk {
+    	label          = "${var.vm_1_name}0.vmdk"
+   	size           = "${var.vm_1_root_disk_size}"
+    	datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
+  }
 
   clone {
     template_uuid = "${data.vsphere_virtual_machine.vm_1_template.id}"
-   customize {
+
+    customize {
       windows_options {
               computer_name  = "${var.vm_1_name}"
               workgroup      = "workgroup"
@@ -206,18 +217,13 @@ resource "vsphere_virtual_machine" "vm_1" {
                 "wmic useraccount where \"name='Administrator'\" set PasswordExpires=FALSE",
               ]
      	}
-  	network_interface {
-    		network_id   = "${data.vsphere_network.vm_1_network.id}"
-    		adapter_type = "${var.vm_1_adapter_type}"
-  	}
+	network_interface {
 
-  	disk {
-    		label          = "${var.vm_1_name}0.vmdk"
-   		size           = "${var.vm_1_root_disk_size}"
-    		keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
-    		datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
-  	}
-     }
+        	ipv4_address = "9.112.239.238"
+        	ipv4_netmask = "255.255.255.0"
+        }
+
+      }
   }
   connection {
     type     = "winrm"
