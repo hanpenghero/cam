@@ -205,19 +205,20 @@ resource "vsphere_virtual_machine" "vm_1" {
                 "net user Administrator \"REDACTED\"",
                 "wmic useraccount where \"name='Administrator'\" set PasswordExpires=FALSE",
               ]
-     }
-  network_interface {
-    network_id   = "${data.vsphere_network.vm_1_network.id}"
-    adapter_type = "${var.vm_1_adapter_type}"
-  }
+     	}
+  	network_interface {
+    		network_id   = "${data.vsphere_network.vm_1_network.id}"
+    		adapter_type = "${var.vm_1_adapter_type}"
+  	}
 
-  disk {
-    label          = "${var.vm_1_name}0.vmdk"
-    size           = "${var.vm_1_root_disk_size}"
-    keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
-    datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
+  	disk {
+    		label          = "${var.vm_1_name}0.vmdk"
+   		size           = "${var.vm_1_root_disk_size}"
+    		keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
+    		datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
+  	}
+     }
   }
- }
   connection {
     type     = "winrm"
     host     = "9.112.239.238"
