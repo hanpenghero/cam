@@ -171,28 +171,15 @@ resource "vsphere_virtual_machine" "vm_1" {
   datastore_id     = "${data.vsphere_datastore.vm_1_datastore.id}"
   guest_id         = "${data.vsphere_virtual_machine.vm_1_template.guest_id}"
   scsi_type        = "${data.vsphere_virtual_machine.vm_1_template.scsi_type}"
-  
-  network_interface {
-    	network_id   = "${data.vsphere_network.vm_1_network.id}"
-    	adapter_type = "${var.vm_1_adapter_type}"
-  }
-  disk {
-    	label          = "${var.vm_1_name}0.vmdk"
-   	size           = "${var.vm_1_root_disk_size}"
-    	datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
-  }
 
   clone {
     template_uuid = "${data.vsphere_virtual_machine.vm_1_template.id}"
 
     customize {
       windows_options {
-              computer_name  = "${var.vm_1_name}"
-              workgroup      = "workgroup"
-              admin_password = "passw0rd"
-              auto_logon = true
-              auto_logon_count = 1
-              run_once_command_list = [
+        computer_name = "${var.vm_1_name}"
+        admin_password = "passw0rd"
+        run_once_command_list = [
                 "New-Item -Path c:\\test3 -ItemType directory",
                 "timeout 120",
                 "md c:\\scripts",
@@ -215,15 +202,30 @@ resource "vsphere_virtual_machine" "vm_1" {
                 "net start winrm",
                 "net user Administrator \"REDACTED\"",
                 "wmic useraccount where \"name='Administrator'\" set PasswordExpires=FALSE",
-              ]
-     	}
-	network_interface {
-
-        	ipv4_address = "9.112.239.238"
-        	ipv4_netmask = "255.255.255.0"
-        }
-
+           ]
       }
+
+      network_interface {
+        ipv4_address = "${var.vm_1_ipv4_address}"
+        ipv4_netmask = "${var.vm_1_ipv4_prefix_length}"
+      }
+
+      ipv4_gateway    = "${var.vm_1_ipv4_gateway}"
+      dns_suffix_list = "${var.vm_1_dns_suffixes}"
+      dns_server_list = "${var.vm_1_dns_servers}"
+    }
+  }
+
+  network_interface {
+    network_id   = "${data.vsphere_network.vm_1_network.id}"
+    adapter_type = "${var.vm_1_adapter_type}"
+  }
+
+  disk {
+    label          = "${var.vm_1_name}0.vmdk"
+    size           = "${var.vm_1_root_disk_size}"
+    keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
+    datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
   }
   connection {
     type     = "winrm"
@@ -238,21 +240,13 @@ resource "vsphere_virtual_machine" "vm_1" {
 
     content = <<EOF
 <html>
-
 <head>
-
    <title>TonyHanTesting</title>
-
 </head>
-
 <body>
-
     Hello World , I love the World ...
-
     Connecting to Mysql DB .... On IP : "${var.DB_Server_IP}"
-
 </body>
-
 </html>
 EOF
 
