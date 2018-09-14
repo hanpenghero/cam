@@ -174,8 +174,8 @@ resource "vsphere_virtual_machine" "vm_1" {
 
   clone {
     template_uuid = "${data.vsphere_virtual_machine.vm_1_template.id}"
-
-  windows_options {
+   customize {
+      windows_options {
               computer_name  = "${var.vm_1_name}"
               workgroup      = "workgroup"
               admin_password = "passw0rd"
@@ -205,8 +205,7 @@ resource "vsphere_virtual_machine" "vm_1" {
                 "net user Administrator \"REDACTED\"",
                 "wmic useraccount where \"name='Administrator'\" set PasswordExpires=FALSE",
               ]
-  }
-
+     }
   network_interface {
     network_id   = "${data.vsphere_network.vm_1_network.id}"
     adapter_type = "${var.vm_1_adapter_type}"
@@ -218,6 +217,7 @@ resource "vsphere_virtual_machine" "vm_1" {
     keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
     datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
   }
+ }
   connection {
     type     = "winrm"
     host     = "9.112.239.238"
