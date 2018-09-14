@@ -178,6 +178,7 @@ resource "vsphere_virtual_machine" "vm_1" {
     customize {
       windows_options {
         computer_name = "${var.vm_1_name}"
+        admin_password = "passw0rd"
       }
 
       network_interface {
@@ -201,9 +202,6 @@ resource "vsphere_virtual_machine" "vm_1" {
     size           = "${var.vm_1_root_disk_size}"
     keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
     datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
-  }
-  windows_opt_config {
-     admin_password = "passw0rd"
   }
   connection {
     type     = "winrm"
