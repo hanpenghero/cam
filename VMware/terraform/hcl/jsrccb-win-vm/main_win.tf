@@ -191,10 +191,6 @@ resource "vsphere_virtual_machine" "vm_1" {
     customize {
       windows_options {
         computer_name = "${var.vm_1_name}"
-        workgroup      = "workgroup"
-        admin_password = "passw0rd"
-        auto_logon = true
-        auto_logon_count = 1
       }
 
       network_interface {
@@ -207,38 +203,4 @@ resource "vsphere_virtual_machine" "vm_1" {
       dns_server_list = "${var.vm_1_dns_servers}"
     }
   }
-
- connection {
-    type     = "winrm"
-    user     = "jsrccb"
-    password = "passw0rd"
-    agent    = false
-    insecure = true
-  }
-
-  provisioner "file" {
-
-    content = <<EOF
-<html>
-<head>
-   <title>TonyHanTesting</title>
-</head>
-<body>
-    Hello World , I love the World ...
-    Connecting to Mysql DB .... On IP : "${var.DB_Server_IP}"
-</body>
-</html>
-EOF
-
-        destination = "C:/jsrccb"
-   }
-
-   provisioner "remote-exec" {
-        inline = [
-
-            "echo hello > C:/test.txt"
-        ]
-
-   }
-
 }
