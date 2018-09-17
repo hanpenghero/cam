@@ -171,6 +171,19 @@ resource "vsphere_virtual_machine" "vm_1" {
   datastore_id     = "${data.vsphere_datastore.vm_1_datastore.id}"
   guest_id         = "${data.vsphere_virtual_machine.vm_1_template.guest_id}"
   scsi_type        = "${data.vsphere_virtual_machine.vm_1_template.scsi_type}"
+  
+  network_interface {
+    network_id   = "${data.vsphere_network.vm_1_network.id}"
+    adapter_type = "${var.vm_1_adapter_type}"
+  }
+
+  disk {
+    label          = "${var.vm_1_name}0.vmdk"
+    size           = "${var.vm_1_root_disk_size}"
+    keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
+    datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
+    thin_provisioned = "true"
+  }
 
   clone {
     template_uuid = "${data.vsphere_virtual_machine.vm_1_template.id}"
@@ -195,19 +208,7 @@ resource "vsphere_virtual_machine" "vm_1" {
     }
   }
 
-  network_interface {
-    network_id   = "${data.vsphere_network.vm_1_network.id}"
-    adapter_type = "${var.vm_1_adapter_type}"
-  }
-
-  disk {
-    label          = "${var.vm_1_name}0.vmdk"
-    size           = "${var.vm_1_root_disk_size}"
-    keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
-    datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
-    thin_provisioned = "true"
-  }
-  connection {
+ connection {
     type     = "winrm"
     user     = "jsrccb"
     password = "passw0rd"
