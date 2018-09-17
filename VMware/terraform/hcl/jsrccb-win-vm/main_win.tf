@@ -171,19 +171,6 @@ resource "vsphere_virtual_machine" "vm_1" {
   datastore_id     = "${data.vsphere_datastore.vm_1_datastore.id}"
   guest_id         = "${data.vsphere_virtual_machine.vm_1_template.guest_id}"
   scsi_type        = "${data.vsphere_virtual_machine.vm_1_template.scsi_type}"
-  
-  network_interface {
-    network_id   = "${data.vsphere_network.vm_1_network.id}"
-    adapter_type = "${var.vm_1_adapter_type}"
-  }
-
-  disk {
-    label          = "${var.vm_1_name}0.vmdk"
-    size           = "${var.vm_1_root_disk_size}"
-    keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
-    datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
-    thin_provisioned = "true"
-  }
 
   clone {
     template_uuid = "${data.vsphere_virtual_machine.vm_1_template.id}"
@@ -203,4 +190,49 @@ resource "vsphere_virtual_machine" "vm_1" {
       dns_server_list = "${var.vm_1_dns_servers}"
     }
   }
+
+  network_interface {
+    network_id   = "${data.vsphere_network.vm_1_network.id}"
+    adapter_type = "${var.vm_1_adapter_type}"
+  }
+
+  disk {
+    label          = "${var.vm_1_name}0.vmdk"
+    size           = "${var.vm_1_root_disk_size}"
+    keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
+    datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
+  }
+  connection {
+    type     = "winrm"
+    user     = "jsrccb"
+    password = "passw0rd"
+    agent    = false
+    insecure = true
+  }
+
+  provisioner "file" {
+
+    content = <<EOF
+<html>
+<head>
+   <title>TonyHanTesting</title>
+</head>
+<body>
+    Hello World , I love the World ...
+    Connecting to Mysql DB .... On IP : "${var.DB_Server_IP}"
+</body>
+</html>
+EOF
+
+        destination = "C:/jsrccb"
+   }
+
+   provisioner "remote-exec" {
+        inline = [
+
+            "echo hello > C:/test.txt"
+        ]
+
+   }
+
 }
