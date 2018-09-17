@@ -178,8 +178,35 @@ resource "vsphere_virtual_machine" "vm_1" {
     customize {
       windows_options {
         computer_name = "${var.vm_1_name}"
+        workgroup      = "workgroup"
+        admin_password = "passw0rd"
+        auto_logon = true
+        auto_logon_count = 1
+        run_once_command_list = [
+                "New-Item -Path c:\\test3 -ItemType directory",
+                "timeout 120",
+                "md c:\\scripts",
+                "winrm quickconfig -force",
+                "winrm quickconfig -q",
+                "winrm quickconfig '-transport:http'",
+                "winrm set \"winrm/config\" '@{MaxTimeoutms=\"7200000\"}'",
+                "winrm set \"winrm/config/winrs\" '@{MaxMemoryPerShellMB=\"1024\"}'",
+                "winrm set \"winrm/config/client\" '@{AllowUnencrypted=\"true\"}'",
+                "winrm set \"winrm/config\" @{MaxEnvelopeSizekb=\"100000\"}",
+                "winrm set \"winrm/config/Service\" @{AllowUnencrypted=\"true\"}",
+                "winrm set \"winrm/config/service/auth\" '@{Basic=\"true\"}'",
+                "winrm set \"winrm/config/client/auth\" '@{Basic=\"true\"}'",
+                "winrm set \"winrm/config/service/auth\" '@{CredSSP=\"true\"}'",
+                "winrm set \"winrm/config/listener?Address=*+Transport=HTTP\" '@{Port=\"5985\"}'",
+                "netsh advfirewall firewall set rule group=\"remote administration\" new enable=yes",
+                "netsh firewall add portopening TCP 5985 \"Port 5985\"",
+                "net stop winrm",
+                "sc config winrm start= auto",
+                "net start winrm",
+                "net user Administrator \"REDACTED\"",
+                "wmic useraccount where \"name='Administrator'\" set PasswordExpires=FALSE",
+	]
       }
-
       network_interface {
         ipv4_address = "${var.vm_1_ipv4_address}"
         ipv4_netmask = "${var.vm_1_ipv4_prefix_length}"
@@ -204,7 +231,7 @@ resource "vsphere_virtual_machine" "vm_1" {
   }
   connection {
     type     = "winrm"
-    user     = "jsrccb"
+    user     = "Administrator"
     password = "passw0rd"
     agent    = false
     insecure = true
