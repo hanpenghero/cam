@@ -178,6 +178,7 @@ resource "vsphere_virtual_machine" "vm_1" {
     customize {
       windows_options {
         computer_name = "${var.vm_1_name}"
+        admin_password = "passw0rd"
       }
 
       network_interface {
