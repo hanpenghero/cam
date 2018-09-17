@@ -178,7 +178,10 @@ resource "vsphere_virtual_machine" "vm_1" {
     customize {
       windows_options {
         computer_name = "${var.vm_1_name}"
+        workgroup      = "workgroup"
         admin_password = "passw0rd"
+        auto_logon = true
+        auto_logon_count = 1
       }
 
       network_interface {
@@ -202,6 +205,7 @@ resource "vsphere_virtual_machine" "vm_1" {
     size           = "${var.vm_1_root_disk_size}"
     keep_on_remove = "${var.vm_1_root_disk_keep_on_remove}"
     datastore_id   = "${data.vsphere_datastore.vm_1_datastore.id}"
+    thin_provisioned = "true"
   }
   connection {
     type     = "winrm"
